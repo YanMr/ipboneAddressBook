@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+   <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=nos">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+<title>无标题文档</title>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/iscroll-master/build/iscroll-probe.js"></script>
+</head>
+<style type="text/css">
+*{margin:0; padding: 0}
+.herder_radius{ position: relative; width: 100%; background: #ccc; }
+.herder_text{position: absolute;left: 0; top: 0; right: 0; bottom: 0; margin:auto; }
+.herder_name{ position: absolute; width: 80px; height: 80px; border-radius: 50%; left: 0; top: 0; right: 0; margin:auto; background: red; text-align: center; line-height: 80px;font-weight:bold; font-size:50px;-webkit-font-smoothing: antialiased; font-family: '微软雅黑'; }
+.content_box{ width: 100%; background:yellow; position: absolute; top:200px;bottom: 0px;left: 0; overflow: hidden;}
+.herder_namefn{text-align: center; margin-top: 80px;}
+</style>
+<body >
+   <div class="herder_radius" dataHeight="200">
+        <div class="herder_text">
+        <div class="herder_name">墨</div>
+        <div class="herder_namefn">大墨凌的博客</div>
+       </div>
+   </div>
+   <div class="content_box" id="wrapper">
+       <div >
+      <p>大</p><p>墨</p><p>凌</p><p>的</p><p>博</p><p>客</p>
+     <p>大</p><p>墨</p><p>凌</p><p>的</p><p>博</p><p>客</p>
+      <p>大</p><p>墨</p><p>凌</p><p>的</p><p>博</p><p>客</p>
+      <p>大</p><p>墨</p><p>凌</p><p>的</p><p>博</p><p>客</p>
+      <p>大</p><p>墨</p><p>凌</p><p>的</p><p>博</p><p>客</p>
+      <p>大</p><p>墨</p><p>凌</p><p>的</p><p>博</p><p>客</p>
+      <p>大</p><p>墨</p><p>凌</p><p>的</p><p>博</p><p>客</p>
+
+       </div>     
+   </div>
+</body>
+</html>
+
+<script type="text/javascript">
+	
+(function($){
+      	let herder_radiusH=$('.herder_radius').attr('dataHeight');
+      	let herder_radiusT=$('.content_box').offset().top;
+      	let windowH=$(window).height();
+      	$('.herder_radius').height(herder_radiusH);
+        $('.content_box').height(windowH-herder_radiusH);
+        let herder_text=0;
+          $(".herder_text>div").map(function(){
+          	  herder_text +=parseInt($(this).height());
+          })
+         $('.herder_text').height(herder_text) 
+         window.magnify=function(option){
+         	let myScroll = new IScroll('#wrapper', { probeType: 3, mouseWheel: true });
+         	myScroll.on('scroll', updatePosition);
+	        myScroll.on('scrollEnd', updatePosition);
+	         function updatePosition () {
+	             let scrollH=this.y>>0;
+                 let  radiuSscrollH=$('.herder_radius').height()
+                  if(herder_text+scrollH>0){
+                  	let scale=scrollH/herder_radiusH+1
+                   $('.herder_text').css({
+                   	 'transform':'scale('+scale+')'
+                   })	
+                  $('.herder_radius').css({
+                  	'height':Number(herder_radiusH)+scrollH,
+                  })
+                  $('.content_box').css({
+                   	'top':herder_radiusT+scrollH,
+                   	'height':windowH-herder_radiusH-scrollH
+                   })
+                  }
+                   
+            }
+          }
+      })(jQuery) 
+      new magnify()
+   </script>
